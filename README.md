@@ -6,6 +6,8 @@
 ![Foundry IQ](https://img.shields.io/badge/IQ%20Layer-Foundry%20IQ-00A86B?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active%20Build-E07B00?style=flat-square)
 
+> *Verata — from **veritas** (Latin: truth) + **data**. Verata finds the truth in your programme data.*
+
 ---
 
 ## What is Verata?
@@ -18,6 +20,8 @@ It bridges two disciplines that have never been combined in a single tool:
 - **Lean Six Sigma DMAIC** — a structured process improvement methodology used to diagnose root causes of underperformance and generate prioritised corrective actions
 
 **The result:** paste your programme data → get a complete diagnostic report in under 60 seconds. No consultant required.
+
+**Works across all sectors:** health, education, agriculture, economic development, infrastructure, environment, social welfare, governance — any programme that tracks indicators against targets.
 
 ---
 
@@ -139,10 +143,8 @@ verata-agent/
 │   ├── VP-03-analyse.md
 │   ├── VP-04-improve.md
 │   ├── VP-05-narrative.md
-│   └── VP-06-summary.md
-├── docs/
-│   ├── VERATA_MASTER_BUILD.md
-│   └── VERATA_PROMPT_LIBRARY.md
+│   ├── VP-06-summary.md
+│   └── VP-07-control.md
 ├── LICENSE
 └── README.md
 ```
@@ -153,7 +155,7 @@ verata-agent/
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/verata-agent.git
+   git clone https://github.com/genevieve-dean/verata-agent.git
    cd verata-agent
    ```
 
