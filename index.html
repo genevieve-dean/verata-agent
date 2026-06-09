@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verata — Where data meets improvement.</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A1628;
+  --bg2: #0F1E38;
+  --bg3: #162440;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.15);
+  --signal: #00E091;
+  --signal-dim: rgba(0,224,145,0.12);
+  --signal-mid: rgba(0,224,145,0.3);
+  --danger: #FF5C1A;
+  --danger-dim: rgba(255,92,26,0.12);
+  --warn: #FFB020;
+  --warn-dim: rgba(255,176,32,0.12);
+  --text: #F0F4FF;
+  --text2: rgba(240,244,255,0.55);
+  --text3: rgba(240,244,255,0.3);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* DMAIC PROGRESS BAR — full width top */
+.dmaic-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--border);
+  z-index: 100;
+  display: flex;
+}
+
+.dmaic-segment {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  transition: background 0.5s ease;
+  position: relative;
+}
+
+.dmaic-segment.done { background: var(--signal); }
+.dmaic-segment.active {
+  background: linear-gradient(90deg, var(--signal), transparent);
+  animation: pulse-bar 1s ease-in-out infinite alternate;
+}
+@keyframes pulse-bar { from { opacity: 0.6; } to { opacity: 1; } }
+
+/* PHASE LABELS */
+.dmaic-labels {
+  display: none;
+  position: fixed;
+  top: 3px; left: 0; right: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 2rem;
+  z-index: 99;
+  gap: 0;
+}
+
+.dmaic-labels.visible { display: flex; }
+
+.dmaic-label-item {
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  transition: color 0.3s;
+}
+
+.dmaic-label-item.done { color: var(--signal); }
+.dmaic-label-item.active { color: var(--signal); }
+
+/* NAV */
+nav {
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 36px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.logo em {
+  font-style: normal;
+  color: var(--signal);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.foundry-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border2);
+  border-radius: 100px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text2);
+  letter-spacing: 0.3px;
+}
+
+.pulse-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* HERO */
+.hero {
+  padding: 4rem 2.5rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 6vw, 68px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+}
+
+.hero h1 span {
+  color: var(--signal);
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--text2);
+  line-height: 1.6;
+  max-width: 560px;
+  margin-bottom: 3rem;
+  font-weight: 400;
+}
+
+/* INPUT SECTION */
+.input-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2.5rem 4rem;
+}
+
+.input-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.input-card-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-card-header h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text2);
+  letter-spacing: 0.3px;
+}
+
+.demo-btn {
+  background: var(--signal-dim);
+  border: 1px solid var(--signal-mid);
+  color: var(--signal);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.demo-btn:hover {
+  background: var(--signal-mid);
+}
+
+textarea {
+  width: 100%;
+  min-height: 220px;
+  background: transparent;
+  border: none;
+  padding: 1.5rem 2rem;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  resize: vertical;
+  line-height: 1.7;
+  outline: none;
+  caret-color: var(--signal);
+}
+
+textarea::placeholder { color: var(--text3); }
+
+.input-card-footer {
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-analyse {
+  background: var(--signal);
+  color: var(--bg);
+  border: none;
+  border-radius: 10px;
+  padding: 0.875rem 2rem;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.3px;
+}
+
+.btn-analyse:hover {
+  background: #00F5A0;
+  transform: translateY(-1px);
+}
+
+.btn-analyse:active { transform: scale(0.98); }
+.btn-analyse:disabled {
+  background: var(--border2);
+  color: var(--text3);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-family: var(--sans);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-ghost:hover { border-color: var(--border2); color: var(--text); }
+
+.input-hint {
+  font-size: 12px;
+  color: var(--text3);
+}
+
+/* PROCESSING */
+.processing {
+  display: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+  padding-top: 5rem;
+}
+
+.processing-inner {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.processing-ring {
+  width: 48px; height: 48px;
+  border: 2px solid var(--border);
+  border-top-color: var(--signal);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.processing-phase {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.processing-detail {
+  font-size: 13px;
+  color: var(--text2);
+  font-family: var(--mono);
+}
+
+/* REPORT */
+.report {
+  display: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 2.5rem 4rem;
+}
+
+/* REPORT HERO */
+.report-hero {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: start;
+}
+
+.report-programme {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.4rem;
+}
+
+.report-meta {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 1.5rem;
+}
+
+.report-goal {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.5;
+  padding: 1rem 1.25rem;
+  background: var(--bg3);
+  border-radius: 8px;
+  border-left: 3px solid var(--border2);
+}
+
+.rate-display {
+  text-align: right;
+}
+
+.rate-number {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -3px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.rate-number.critical { color: var(--danger); }
+.rate-number.moderate { color: var(--warn); }
+.rate-number.good { color: var(--signal); }
+
+.rate-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+/* SECTION */
+.section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.section-body { padding: 1.75rem 2rem; }
+
+/* EXEC SUMMARY */
+.exec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.exec-block {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.exec-block h4 {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.exec-block p, .exec-block li {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+  text-transform: none;
+  font-weight: 400;
+}
+
+.exec-block ul { list-style: none; padding: 0; }
+.exec-block li {
+  padding: 4px 0;
+  padding-left: 14px;
+  position: relative;
+  text-transform: none;
+}
+.exec-block li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--signal);
+  font-size: 10px;
+  top: 6px;
+}
+
+/* INDICATOR TABLE */
+.ind-table { width: 100%; border-collapse: collapse; }
+
+.ind-table th {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: left;
+  padding: 0 1rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ind-table td {
+  padding: 1rem;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.ind-table tr:last-child td { border-bottom: none; }
+.ind-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.ind-name { font-weight: 500; }
+.mono-val { font-family: var(--mono); font-size: 13px; color: var(--text2); }
+
+.sev-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sev-critical { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(255,92,26,0.3); }
+.sev-moderate { background: var(--warn-dim); color: var(--warn); border: 1px solid rgba(255,176,32,0.3); }
+.sev-on_track { background: var(--signal-dim); color: var(--signal); border: 1px solid rgba(0,224,145,0.3); }
+
+.prog-wrap {
+  width: 80px;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 2px;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.prog-fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+}
+.prog-critical { background: var(--danger); }
+.prog-moderate { background: var(--warn); }
+.prog-on_track { background: var(--signal); }
+
+/* ROOT CAUSE */
+.cause-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--danger);
+  transition: border-color 0.2s;
+}
+
+.cause-card.moderate { border-left-color: var(--warn); }
+.cause-card:last-child { margin-bottom: 0; }
+
+.cause-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.cause-indicator-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.cause-category {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  background: var(--bg3);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.conf-chip {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+.conf-high { background: var(--signal-dim); color: var(--signal); }
+.conf-medium { background: var(--warn-dim); color: var(--warn); }
+.conf-low { background: var(--danger-dim); color: var(--danger); }
+
+.cause-factors { list-style: none; padding: 0; margin-top: 0.75rem; }
+.cause-factors li {
+  font-size: 13px;
+  color: var(--text2);
+  padding: 4px 0 4px 18px;
+  position: relative;
+  line-height: 1.5;
+}
+.cause-factors li::before {
+  content: '·';
+  position: absolute;
+  left: 6px;
+  color: var(--danger);
+  font-size: 18px;
+  line-height: 1;
+  top: 3px;
+}
+.cause-card.moderate .cause-factors li::before { color: var(--warn); }
+
+/* EVIDENCE PANEL */
+.evidence-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 100px;
+  cursor: pointer;
+  margin-top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+.evidence-toggle:hover { border-color: var(--signal); color: var(--signal); }
+.evidence-toggle .arrow { transition: transform 0.2s; display: inline-block; }
+.evidence-toggle.open .arrow { transform: rotate(180deg); }
+
+.evidence-panel {
+  display: none;
+  margin-top: 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.evidence-panel.open { display: block; }
+.evidence-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.evidence-row:last-child { border-bottom: none; padding-bottom: 0; }
+.evidence-indicator { color: var(--text2); }
+.evidence-stat { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.evidence-actual { color: var(--danger); }
+.evidence-on_track { color: var(--signal); }
+.evidence-moderate { color: var(--warn); }
+
+/* ACTION PLAN */
+.action-item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.action-item:last-child { border-bottom: none; padding-bottom: 0; }
+.action-item:first-child { padding-top: 0; }
+
+.priority-badge {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.p1 { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(255,92,26,0.3); }
+.p2 { background: var(--warn-dim); color: var(--warn); border: 1px solid rgba(255,176,32,0.3); }
+.p3 { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+
+.action-content { flex: 1; }
+.action-text { font-size: 15px; font-weight: 500; margin-bottom: 8px; line-height: 1.4; }
+
+.action-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--text3);
+}
+.tag-effort-low { color: var(--signal); border-color: rgba(0,224,145,0.25); background: var(--signal-dim); }
+.tag-effort-medium { color: var(--warn); border-color: rgba(255,176,32,0.25); background: var(--warn-dim); }
+.tag-effort-high { color: var(--danger); border-color: rgba(255,92,26,0.25); background: var(--danger-dim); }
+.tag-impact-high { color: var(--signal); border-color: rgba(0,224,145,0.25); background: var(--signal-dim); }
+.tag-impact-medium { color: var(--warn); border-color: rgba(255,176,32,0.25); background: var(--warn-dim); }
+.tag-impact-low { color: var(--text3); }
+
+/* NARRATIVE */
+.narrative-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text2);
+  padding: 1.5rem;
+  background: var(--bg3);
+  border-radius: 10px;
+  border-left: 3px solid var(--signal);
+}
+
+/* REPORT ACTIONS */
+.report-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.btn-export {
+  background: var(--signal);
+  color: var(--bg);
+  border: none;
+  border-radius: 10px;
+  padding: 0.875rem 2rem;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-export:hover { background: #00F5A0; transform: translateY(-1px); }
+
+/* HIDDEN */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- DMAIC PROGRESS BAR -->
+<div class="dmaic-bar" id="dmaicBar">
+  <div class="dmaic-segment" id="seg-define"></div>
+  <div class="dmaic-segment" id="seg-measure"></div>
+  <div class="dmaic-segment" id="seg-analyse"></div>
+  <div class="dmaic-segment" id="seg-improve"></div>
+  <div class="dmaic-segment" id="seg-control"></div>
+  <div class="dmaic-segment" id="seg-report"></div>
+</div>
+
+<div class="dmaic-labels" id="dmaicLabels">
+  <div class="dmaic-label-item" id="lbl-define">Define</div>
+  <div class="dmaic-label-item" id="lbl-measure">Measure</div>
+  <div class="dmaic-label-item" id="lbl-analyse">Analyse</div>
+  <div class="dmaic-label-item" id="lbl-improve">Improve</div>
+  <div class="dmaic-label-item" id="lbl-control">Control</div>
+  <div class="dmaic-label-item" id="lbl-report">Report</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">vera<em>ta</em></div>
+  <div class="nav-right">
+    <div class="foundry-pill">
+      <span class="pulse-dot"></span>
+      Foundry IQ · Reasoning Agents
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="heroSection">
+  <div class="hero-eyebrow">Microsoft Agents League Hackathon 2026</div>
+  <h1>Your programme data<br>has answers.<br><span>Verata finds them.</span></h1>
+  <p class="hero-sub">Paste your indicator data. Verata's DMAIC reasoning agent analyses performance gaps, identifies root causes, and builds your improvement plan — in seconds.</p>
+</div>
+
+<!-- INPUT -->
+<div class="input-section" id="inputSection">
+  <div class="input-card">
+    <div class="input-card-header">
+      <h2>Programme data input</h2>
+      <button class="demo-btn" onclick="loadDemo()">↳ Load demo data</button>
+    </div>
+    <textarea id="programmeData" placeholder="Paste your indicator data here — any format works.
+
+Example:
+Programme: Youth Skills Development Initiative
+Period: Q1 2026
+
+Indicator                    Target   Actual
+Youth trained (vocational)   500      287
+Certifications awarded       400      198
+Job placements (90 days)     200      74
+Employer partnerships        25       18
+Beneficiary retention        80%      61%"></textarea>
+    <div class="input-card-footer">
+      <span class="input-hint">Any format · Tables, lists, CSV, narrative</span>
+      <div style="display:flex;gap:0.75rem;">
+        <button class="btn-ghost" onclick="clearForm()">Clear</button>
+        <button class="btn-analyse" id="analyseBtn" onclick="startAnalysis()">
+          ✦ Analyse my programme
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESSING -->
+<div class="processing" id="processingSection">
+  <div class="processing-inner">
+    <div class="processing-ring"></div>
+    <div class="processing-phase" id="processingPhase">Initialising...</div>
+    <div class="processing-detail" id="processingDetail">Preparing analysis pipeline</div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div class="report" id="reportSection">
+
+  <div class="report-hero">
+    <div>
+      <div class="report-programme" id="repName">—</div>
+      <div class="report-meta" id="repMeta">—</div>
+      <div class="report-goal" id="repGoal">—</div>
+    </div>
+    <div class="rate-display">
+      <div class="rate-number" id="repRate">—</div>
+      <div class="rate-label">achievement rate</div>
+    </div>
+  </div>
+
+  <!-- EXEC SUMMARY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Executive summary</span>
+    </div>
+    <div class="section-body">
+      <div class="exec-grid" id="execGrid"></div>
+    </div>
+  </div>
+
+  <!-- GAP ANALYSIS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Performance gap analysis</span>
+    </div>
+    <div class="section-body" style="padding:0;">
+      <table class="ind-table">
+        <thead>
+          <tr>
+            <th style="padding-left:2rem;">Indicator</th>
+            <th>Target</th>
+            <th>Actual</th>
+            <th>Achievement</th>
+            <th>Severity</th>
+          </tr>
+        </thead>
+        <tbody id="indTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ROOT CAUSE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Root cause analysis — Foundry IQ</span>
+    </div>
+    <div class="section-body" id="rootCauseBody"></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Improvement action plan</span>
+    </div>
+    <div class="section-body" id="actionBody"></div>
+  </div>
+
+  <!-- CONTROL PLAN -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Control plan — sustaining improvement</span>
+    </div>
+    <div class="section-body" style="padding:0;">
+      <table class="ind-table">
+        <thead>
+          <tr>
+            <th style="padding-left:2rem;">Action</th>
+            <th>KPI to monitor</th>
+            <th>Warning trigger</th>
+            <th>Review</th>
+            <th>Owner</th>
+          </tr>
+        </thead>
+        <tbody id="controlTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- NARRATIVE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-label">Donor narrative</span>
+    </div>
+    <div class="section-body">
+      <div class="narrative-text" id="narrativeText">—</div>
+    </div>
+  </div>
+
+  <div class="report-actions">
+    <button class="btn-ghost" onclick="startOver()">← New analysis</button>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:flex-end;">
+      <button class="btn-ghost" onclick="generateTemplates()" style="border-color:rgba(0,224,145,0.3);color:var(--signal);">⬡ Generate implementation templates</button>
+      <button class="btn-ghost" onclick="copyEmailSummary()" id="emailBtn">✉ Copy email summary</button>
+      <button class="btn-export" onclick="exportPDF()">↓ Download PDF report</button>
+    </div>
+  </div>
+
+  <!-- EMAIL SUMMARY TOAST -->
+  <div id="copyToast" style="display:none;position:fixed;bottom:2rem;right:2rem;background:var(--signal);color:var(--bg);padding:0.875rem 1.5rem;border-radius:10px;font-weight:700;font-size:14px;z-index:999;">
+    ✓ Email summary copied to clipboard
+  </div>
+
+</div>
+
+<script>
+const DEMO = `Programme: Limpopo Community Health Access Programme
+Period: Q2 2026 (April – June)
+Goal: Increase access to primary health services for rural communities in Limpopo
+
+Indicator                              Target    Actual
+Community health worker visits         2400      1342
+Antenatal care enrolments (new)        320       201
+Child immunisation coverage            85%       58%
+TB screening referrals completed       180       89
+Health education sessions held         96        71
+Community clinic days (mobile)         48        29`;
+
+const PHASES = ['define','measure','analyse','improve','control','report'];
+
+function loadDemo() { document.getElementById('programmeData').value = DEMO; }
+function clearForm() { document.getElementById('programmeData').value = ''; }
+
+function setPhase(phase) {
+  document.getElementById('dmaicLabels').classList.add('visible');
+  const idx = PHASES.indexOf(phase);
+  PHASES.forEach((p, i) => {
+    const seg = document.getElementById('seg-' + p);
+    const lbl = document.getElementById('lbl-' + p);
+    if (i < idx) { seg.className = 'dmaic-segment done'; lbl.className = 'dmaic-label-item done'; }
+    else if (i === idx) { seg.className = 'dmaic-segment active'; lbl.className = 'dmaic-label-item active'; }
+    else { seg.className = 'dmaic-segment'; lbl.className = 'dmaic-label-item'; }
+  });
+}
+
+function setProcessing(phase, detail) {
+  document.getElementById('processingPhase').textContent = phase;
+  document.getElementById('processingDetail').textContent = detail;
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function callClaude(system, userContent) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      system,
+      messages: [{ role: 'user', content: userContent }]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error('API error: ' + data.error.message);
+  const text = data.content[0].text;
+  return text;
+}
+
+function safeJSON(text) {
+  // Strip markdown fences
+  let clean = text.replace(/```json|```/g, '').trim();
+  // Find first { or [ and last } or ]
+  const firstBrace = Math.min(
+    clean.indexOf('{') === -1 ? Infinity : clean.indexOf('{'),
+    clean.indexOf('[') === -1 ? Infinity : clean.indexOf('[')
+  );
+  const lastBrace = Math.max(clean.lastIndexOf('}'), clean.lastIndexOf(']'));
+  if (firstBrace !== Infinity && lastBrace > firstBrace) {
+    clean = clean.slice(firstBrace, lastBrace + 1);
+  }
+  try {
+    return JSON.parse(clean);
+  } catch(e) {
+    console.error('JSON parse failed. Raw text:', text);
+    throw new Error('Could not parse AI response as JSON. Raw: ' + text.slice(0, 200));
+  }
+}
+
+
+
+function startOver() {
+  document.getElementById('reportSection').style.display = 'none';
+  document.getElementById('heroSection').style.display = 'block';
+  document.getElementById('inputSection').style.display = 'block';
+  document.getElementById('programmeData').value = '';
+  document.getElementById('dmaicLabels').classList.remove('visible');
+  PHASES.forEach(p => {
+    document.getElementById('seg-' + p).className = 'dmaic-segment';
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function startAnalysis() {
+  const raw = document.getElementById('programmeData').value.trim();
+  if (!raw) { alert('Please paste your programme data first.'); return; }
+
+  document.getElementById('heroSection').style.display = 'none';
+  document.getElementById('inputSection').style.display = 'none';
+  document.getElementById('processingSection').style.display = 'block';
+  document.getElementById('reportSection').style.display = 'none';
+
+  try {
+    // VP-01 Define
+    setPhase('define');
+    setProcessing('Defining your programme', 'Extracting indicators, targets, and actuals');
+    await delay(500);
+    const vp01 = safeJSON(await callClaude(`You are Verata. Extract programme data from user input and return ONLY raw JSON (no markdown): {"programme_name":"string","goal":"string","reporting_period":"string","indicators":[{"indicator_name":"string","target":0,"actual":0,"unit":"string"}]}. Use null for unknown fields.`, raw));
+
+    // VP-02 Measure
+    setPhase('measure');
+    setProcessing('Measuring performance gaps', 'Calculating achievement rates and severity scores');
+    await delay(500);
+    const vp02 = safeJSON(await callClaude(`You are Verata. Calculate performance gaps. For each indicator: achievement_rate=(actual/target)*100 rounded to 1dp, gap=target-actual, severity: "critical"<60%, "moderate"60-85%, "on_track">=85%. Also calculate overall_achievement_rate. Return ONLY raw JSON (no markdown): {"programme_name":"string","goal":"string","reporting_period":"string","overall_achievement_rate":0,"indicators":[{"indicator_name":"string","target":0,"actual":0,"unit":"string","achievement_rate":0,"gap":0,"severity":"string"}]}`, JSON.stringify(vp01)));
+
+    // VP-03 Analyse
+    setPhase('analyse');
+    setProcessing('Analysing root causes', 'Foundry IQ grounding — citing findings to your data');
+    await delay(800);
+    const vp03 = safeJSON(await callClaude(`You are Verata, a Lean Six Sigma MBB and MERL specialist. For each critical/moderate indicator, identify: primary_root_cause (one of: process_design, resource_constraint, capacity_gap, context_barrier, data_quality, coordination_failure), 2-3 contributing_factors grounded in actual data, confidence (high/medium/low). Return ONLY raw JSON: {"analysis":[{"indicator_name":"string","severity":"string","achievement_rate":0,"primary_root_cause":"string","contributing_factors":["string"],"confidence":"string"}]}`, JSON.stringify(vp02)));
+
+    // VP-04 Improve
+    setPhase('improve');
+    setProcessing('Building improvement plan', 'Scoring actions by effort and impact');
+    await delay(500);
+    const vp04 = safeJSON(await callClaude(`You are Verata. Generate a prioritised improvement action plan from root causes. Each action: action (verb+what+whom), addresses_indicator, root_cause_category, implementation_effort (low/medium/high), expected_impact (low/medium/high), priority_score 1-5 (1=high impact+low effort), timeframe (immediate 0-30 days/short-term 1-3 months/medium-term 3-6 months). Sort by priority_score asc. Return ONLY raw JSON: {"actions":[{"action":"string","addresses_indicator":"string","root_cause_category":"string","implementation_effort":"string","expected_impact":"string","priority_score":1,"timeframe":"string"}]}`, JSON.stringify(vp03)));
+
+    // VP-05 + VP-06 parallel
+    setPhase('report');
+    setProcessing('Generating your report', 'Writing donor narrative and executive summary');
+    await delay(400);
+    const ctx = JSON.stringify({ programme: vp02, rootCauses: vp03, actions: vp04 });
+
+    // VP-07 Control + VP-05 + VP-06 parallel
+    setPhase('control');
+    setProcessing('Building control plan', 'Defining KPIs, review triggers and accountability');
+    await delay(400);
+    const ctrlCtx = JSON.stringify({ programme: vp02, rootCauses: vp03, actions: vp04 });
+    const [narrative, execSummary, vp07raw] = await Promise.all([
+      callClaude(`You are Verata. Write a single donor-ready narrative paragraph (150-200 words). Open with programme name and period. State overall achievement rate. Name 1-2 critical gaps and root causes. Reference top 2 improvement actions. Close with forward-looking statement. Professional, factual, no jargon, no bullets, flowing prose only. Return paragraph only.`, ctx),
+      callClaude(`You are Verata. Generate executive summary with exactly 3 sections. PERFORMANCE SNAPSHOT: 2-3 sentences on overall rate, indicators on/off track, most critical gap. ROOT CAUSES: 3-4 bullets format "• [category]: [finding]". TOP PRIORITIES: top 3 actions format "• [action] — [timeframe]". Plain text only, use section headers exactly as written, no markdown.`, ctx),
+      callClaude(`You are Verata, a Lean Six Sigma MBB. Generate a Control Plan to sustain improvements for this programme. For each top priority action (max 4), define: kpi (what to monitor), baseline (current actual from data), target (what good looks like), review_frequency ("weekly"|"monthly"|"quarterly"), warning_trigger (the threshold that signals regression), accountable_role (who owns it). Return ONLY raw JSON: {"control_plan":[{"action_summary":"string","kpi":"string","baseline":"string","target":"string","review_frequency":"string","warning_trigger":"string","accountable_role":"string"}]}`, ctrlCtx)
+    ]);
+    const vp07 = safeJSON(vp07raw);
+
+    setPhase('report');
+    renderReport(vp02, vp03, vp04, vp07, narrative, execSummary);
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('processingSection').style.display = 'none';
+    document.getElementById('heroSection').style.display = 'block';
+    document.getElementById('inputSection').style.display = 'block';
+    alert('Analysis failed: ' + err.message);
+  }
+}
+
+function renderReport(vp02, vp03, vp04, vp07, narrative, execSummary) {
+  storeReportData(vp02, vp03, vp04, vp07, narrative, execSummary);
+  document.getElementById('processingSection').style.display = 'none';
+
+  // Mark all phases done
+  PHASES.forEach(p => {
+    document.getElementById('seg-' + p).className = 'dmaic-segment done';
+    document.getElementById('lbl-' + p).className = 'dmaic-label-item done';
+  });
+
+  // Header
+  document.getElementById('repName').textContent = vp02.programme_name || 'Programme';
+  document.getElementById('repMeta').textContent = [vp02.reporting_period, 'Project #123702'].filter(Boolean).join(' · ');
+  document.getElementById('repGoal').textContent = vp02.goal || '';
+  const rate = Math.round(vp02.overall_achievement_rate);
+  const rateEl = document.getElementById('repRate');
+  rateEl.textContent = rate + '%';
+  rateEl.className = 'rate-number ' + (rate < 60 ? 'critical' : rate < 85 ? 'moderate' : 'good');
+
+  // Exec summary - parse and render with sentence case
+  function toSentenceCase(str) {
+    return str.replace(/([.!?]\s+)([a-z])/g, (m, p1, p2) => p1 + p2.toUpperCase())
+              .replace(/^([A-Z\s]+)$/, s => s.charAt(0) + s.slice(1).toLowerCase());
+  }
+  const execLines = execSummary.split('\n').map(l => l.trim()).filter(l => l);
+  const execBlocks = [];
+  let current = null;
+  const sectionHeaders = ['PERFORMANCE SNAPSHOT', 'ROOT CAUSES', 'TOP PRIORITIES'];
+  execLines.forEach(line => {
+    const isHeader = sectionHeaders.some(h => line.toUpperCase().includes(h));
+    if (isHeader) {
+      if (current) execBlocks.push(current);
+      const label = sectionHeaders.find(h => line.toUpperCase().includes(h)) || line;
+      current = { title: label, items: [] };
+    } else if (current) {
+      current.items.push(line.replace(/^[•\-–]\s*/, ''));
+    }
+  });
+  if (current) execBlocks.push(current);
+
+  const execGrid = document.getElementById('execGrid');
+  execGrid.innerHTML = execBlocks.slice(0, 3).map(block => {
+    return `<div class="exec-block">
+      <h4>${block.title}</h4>
+      <ul>${block.items.map(item => `<li>${item}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+
+  // Indicator table
+  document.getElementById('indTableBody').innerHTML = vp02.indicators.map(ind => {
+    const sev = ind.severity;
+    const rate = parseFloat(ind.achievement_rate);
+    const fill = Math.min(rate, 100);
+    return `<tr>
+      <td class="ind-name" style="padding-left:2rem;">${ind.indicator_name}</td>
+      <td class="mono-val">${ind.target.toLocaleString()} ${ind.unit || ''}</td>
+      <td class="mono-val">${ind.actual.toLocaleString()} ${ind.unit || ''}</td>
+      <td>
+        <span class="prog-wrap"><span class="prog-fill prog-${sev}" style="width:${fill}%"></span></span>
+        <span class="mono-val">${rate.toFixed(1)}%</span>
+      </td>
+      <td><span class="sev-chip sev-${sev}">${sev === 'on_track' ? 'On track' : sev.charAt(0).toUpperCase() + sev.slice(1)}</span></td>
+    </tr>`;
+  }).join('');
+
+  // Root causes with evidence panels
+  const indicators = vp02.indicators || [];
+  document.getElementById('rootCauseBody').innerHTML = (vp03.analysis || []).map((item, idx) => {
+    const isCrit = item.severity === 'critical';
+    // Build evidence rows from matching indicators
+    const relatedInds = indicators.filter(ind =>
+      ind.indicator_name.toLowerCase().includes(item.indicator_name.toLowerCase().split(' ')[0]) ||
+      item.indicator_name.toLowerCase().includes(ind.indicator_name.toLowerCase().split(' ')[0])
+    ).slice(0, 4);
+    // Always include the primary indicator
+    const primaryInd = indicators.find(i => i.indicator_name === item.indicator_name);
+    const evidenceInds = primaryInd ? [primaryInd, ...relatedInds.filter(i => i.indicator_name !== item.indicator_name)].slice(0, 4) : relatedInds;
+
+    const evidenceRows = evidenceInds.map(ind => {
+      const rate = parseFloat(ind.achievement_rate || 0);
+      const sev = ind.severity || 'moderate';
+      return `<div class="evidence-row">
+        <span class="evidence-indicator">${ind.indicator_name}</span>
+        <span class="evidence-stat">
+          <span class="evidence-actual">${ind.actual.toLocaleString()} ${ind.unit || ''}</span>
+          <span style="color:var(--text3);"> / ${ind.target.toLocaleString()} ${ind.unit || ''} target</span>
+          <span class="evidence-${sev}" style="margin-left:8px;">${rate.toFixed(1)}%</span>
+        </span>
+      </div>`;
+    }).join('');
+
+    return `<div class="cause-card ${isCrit ? '' : 'moderate'}">
+      <div class="cause-top">
+        <div>
+          <div class="cause-indicator-name">${item.indicator_name}</div>
+          <span class="cause-category">${item.primary_root_cause.replace(/_/g, ' ')}</span>
+        </div>
+        <span class="conf-chip conf-${item.confidence}">${item.confidence} confidence</span>
+      </div>
+      <ul class="cause-factors">
+        ${(item.contributing_factors || []).map(f => `<li>${f}</li>`).join('')}
+      </ul>
+      <button class="evidence-toggle" onclick="toggleEvidence(this)" id="ev-btn-${idx}">
+        <span class="arrow">▾</span> View data evidence
+      </button>
+      <div class="evidence-panel" id="ev-panel-${idx}">
+        ${evidenceRows || '<p style="font-size:12px;color:var(--text3);">No matching indicator data found.</p>'}
+      </div>
+    </div>`;
+  }).join('') || '<p style="color:var(--text3);font-size:14px;">No critical or moderate gaps found.</p>';
+
+  // Actions
+  document.getElementById('actionBody').innerHTML = (vp04.actions || []).slice(0, 6).map((a, i) => {
+    const pn = i + 1;
+    const pc = pn === 1 ? 'p1' : pn === 2 ? 'p2' : 'p3';
+    return `<div class="action-item">
+      <div class="priority-badge ${pc}">${pn}</div>
+      <div class="action-content">
+        <div class="action-text">${a.action}</div>
+        <div class="action-tags">
+          <span class="tag tag-effort-${a.implementation_effort}">${a.implementation_effort} effort</span>
+          <span class="tag tag-impact-${a.expected_impact}">${a.expected_impact} impact</span>
+          <span class="tag">${a.timeframe}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Control plan
+  document.getElementById('controlTableBody').innerHTML = (vp07.control_plan || []).map(item => {
+    const freqColor = item.review_frequency === 'weekly' ? 'var(--danger)' : item.review_frequency === 'monthly' ? 'var(--warn)' : 'var(--signal)';
+    return `<tr>
+      <td class="ind-name" style="padding-left:2rem;max-width:180px;">${item.action_summary}</td>
+      <td style="font-size:13px;color:var(--text2);">${item.kpi}<br><span style="font-family:var(--mono);font-size:11px;color:var(--text3);">baseline: ${item.baseline} → ${item.target}</span></td>
+      <td style="font-size:13px;color:var(--danger);">${item.warning_trigger}</td>
+      <td><span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:${freqColor};">${item.review_frequency}</span></td>
+      <td style="font-size:13px;color:var(--text2);">${item.accountable_role}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" style="padding:1rem 2rem;color:var(--text3);font-size:14px;">Control plan not available.</td></tr>';
+
+  // Narrative
+  document.getElementById('narrativeText').textContent = narrative;
+
+  document.getElementById('reportSection').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+// Store full report data globally for export
+let _reportData = {};
+
+function storeReportData(vp02, vp03, vp04, vp07, narrative, execSummary) {
+  _reportData = { vp02, vp03, vp04, vp07, narrative, execSummary };
+}
+
+function toggleEvidence(btn) {
+  btn.classList.toggle('open');
+  const panelId = btn.id.replace('ev-btn-', 'ev-panel-');
+  const panel = document.getElementById(panelId);
+  panel.classList.toggle('open');
+  btn.querySelector('.arrow').textContent = panel.classList.contains('open') ? '▴' : '▾';
+  btn.childNodes[1].textContent = panel.classList.contains('open') ? ' Hide data evidence' : ' View data evidence';
+}
+
+function generateTemplates() {
+  const d = _reportData;
+  if (!d.vp02) return;
+  const name = d.vp02.programme_name || 'Programme';
+  const period = d.vp02.reporting_period || '';
+  const today = new Date().toLocaleDateString('en-ZA');
+
+  // Build improvement plan template as CSV (opens in Excel)
+  const impRows = [
+    ['VERATA — IMPROVEMENT PLAN TEMPLATE', '', '', '', '', '', ''],
+    [`Programme: ${name}`, `Period: ${period}`, '', '', '', '', ''],
+    [`Generated: ${today}`, '', '', '', '', '', ''],
+    [''],
+    ['Priority', 'Action', 'Addresses Indicator', 'Root Cause', 'Effort', 'Impact', 'Timeframe', 'Responsible Person', 'Start Date', 'Status'],
+    ...(d.vp04.actions || []).slice(0, 8).map((a, i) => [
+      i + 1,
+      a.action,
+      a.addresses_indicator,
+      a.root_cause_category.replace(/_/g, ' '),
+      a.implementation_effort,
+      a.expected_impact,
+      a.timeframe,
+      '[Assign person]',
+      '[Start date]',
+      'Not started'
+    ])
+  ];
+
+  // Build control plan template as CSV
+  const ctrlRows = [
+    ['VERATA — CONTROL PLAN REGISTER', '', '', '', '', ''],
+    [`Programme: ${name}`, `Period: ${period}`, '', '', '', ''],
+    [`Generated: ${today}`, '', '', '', '', ''],
+    [''],
+    ['Action', 'KPI to Monitor', 'Baseline', 'Target', 'Warning Trigger', 'Review Frequency', 'Accountable Role', 'Last Review Date', 'Status'],
+    ...(d.vp07?.control_plan || []).map(c => [
+      c.action_summary,
+      c.kpi,
+      c.baseline,
+      c.target,
+      c.warning_trigger,
+      c.review_frequency,
+      c.accountable_role,
+      '[Date]',
+      'Active'
+    ])
+  ];
+
+  function toCSV(rows) {
+    return rows.map(r => Array.isArray(r) ? r.map(c => `"${String(c || '').replace(/"/g, '""')}"`).join(',') : '').join('\n');
+  }
+
+  // Download improvement plan
+  const impBlob = new Blob([toCSV(impRows)], { type: 'text/csv;charset=utf-8;' });
+  const impLink = document.createElement('a');
+  impLink.href = URL.createObjectURL(impBlob);
+  impLink.download = `Verata_Improvement_Plan_${name.replace(/\s+/g,'_')}.csv`;
+  impLink.click();
+
+  setTimeout(() => {
+    // Download control plan after brief delay
+    const ctrlBlob = new Blob([toCSV(ctrlRows)], { type: 'text/csv;charset=utf-8;' });
+    const ctrlLink = document.createElement('a');
+    ctrlLink.href = URL.createObjectURL(ctrlBlob);
+    ctrlLink.download = `Verata_Control_Plan_${name.replace(/\s+/g,'_')}.csv`;
+    ctrlLink.click();
+
+    const toast = document.getElementById('copyToast');
+    toast.textContent = '✓ Improvement Plan + Control Register downloaded';
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3500);
+  }, 800);
+}
+
+function copyEmailSummary() {
+  const d = _reportData;
+  if (!d.vp02) return;
+  const name = d.vp02.programme_name || 'Programme';
+  const period = d.vp02.reporting_period || '';
+  const rate = Math.round(d.vp02.overall_achievement_rate);
+  const critical = (d.vp02.indicators || []).filter(i => i.severity === 'critical').length;
+  const moderate = (d.vp02.indicators || []).filter(i => i.severity === 'moderate').length;
+  const topActions = (d.vp04.actions || []).slice(0, 3).map((a, i) => `${i+1}. ${a.action} (${a.timeframe})`).join('\n');
+
+  const subject = `Verata Programme Analysis — ${name} — ${period}`;
+  const body = `Subject: ${subject}
+
+Dear [Name],
+
+Please find below a summary of the Verata performance analysis for ${name}${period ? ' (' + period + ')' : ''}.
+
+PERFORMANCE OVERVIEW
+Overall achievement rate: ${rate}%
+Critical gaps: ${critical} indicator(s) requiring immediate attention
+Moderate gaps: ${moderate} indicator(s) requiring improvement
+
+DONOR NARRATIVE
+${d.narrative}
+
+TOP IMPROVEMENT PRIORITIES
+${topActions}
+
+Full analysis report attached.
+
+This analysis was generated by Verata — Where data meets improvement.
+Powered by Microsoft Foundry IQ · Reasoning Agents
+
+[Your name]
+[Organisation]`;
+
+  navigator.clipboard.writeText(body).then(() => {
+    const toast = document.getElementById('copyToast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+  });
+}
+
+function exportPDF() {
+  const d = _reportData;
+  if (!d.vp02) return;
+
+  const name = d.vp02.programme_name || 'Programme';
+  const period = d.vp02.reporting_period || '';
+  const goal = d.vp02.goal || '';
+  const rate = Math.round(d.vp02.overall_achievement_rate);
+  const today = new Date().toLocaleDateString('en-ZA', { year:'numeric', month:'long', day:'numeric' });
+
+  // Build PDF HTML
+  const pdfHTML = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Verata Report — ${name}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Space Grotesk', Arial, sans-serif; color: #1A1A2E; background: #fff; font-size: 13px; }
+
+  /* COVER */
+  .cover { background: #0A1628; color: #fff; padding: 60px 50px 50px; min-height: 260px; display: flex; flex-direction: column; justify-content: space-between; }
+  .cover-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .cover-logo { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+  .cover-logo em { font-style: normal; color: #00E091; }
+  .cover-badge { border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; padding: 5px 14px; font-size: 11px; color: rgba(255,255,255,0.6); }
+  .cover-main { margin-top: 2rem; }
+  .cover-programme { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .cover-meta { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 1.5rem; }
+  .cover-rate-wrap { display: flex; align-items: baseline; gap: 12px; }
+  .cover-rate { font-size: 56px; font-weight: 700; letter-spacing: -3px; line-height: 1; color: ${rate < 60 ? '#FF5C1A' : rate < 85 ? '#FFB020' : '#00E091'}; }
+  .cover-rate-label { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+  .cover-goal { background: rgba(255,255,255,0.07); border-left: 3px solid rgba(255,255,255,0.2); padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.5; margin-top: 1rem; }
+
+  /* BODY */
+  .body { padding: 36px 50px; }
+  .section { margin-bottom: 28px; page-break-inside: avoid; }
+  .section-title { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #0A1628; border-bottom: 2px solid #0A1628; padding-bottom: 6px; margin-bottom: 16px; }
+
+  /* EXEC GRID */
+  .exec-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .exec-block h4 { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #00A86B; margin-bottom: 6px; }
+  .exec-block p, .exec-block li { font-size: 12px; color: #444; line-height: 1.6; }
+  .exec-block ul { list-style: none; padding: 0; }
+  .exec-block li { padding-left: 12px; position: relative; padding-bottom: 3px; }
+  .exec-block li::before { content: '→'; position: absolute; left: 0; color: #00A86B; font-size: 10px; top: 2px; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #0A1628; color: #fff; padding: 8px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  td { padding: 8px 10px; border-bottom: 1px solid #EBEBEB; vertical-align: middle; }
+  tr:nth-child(even) td { background: #F8F8FC; }
+  .sev { display: inline-block; padding: 2px 8px; border-radius: 100px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sev-critical { background: #FDECEA; color: #C0392B; }
+  .sev-moderate { background: #FEF5E7; color: #C4870A; }
+  .sev-on_track { background: #E6F7F1; color: #007A4D; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+
+  /* ROOT CAUSE */
+  .cause { border: 1px solid #E8E8F0; border-left: 3px solid #FF5C1A; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; }
+  .cause.moderate { border-left-color: #FFB020; }
+  .cause-name { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .cause-cat { font-family: monospace; font-size: 10px; background: #F0F0F8; padding: 2px 6px; border-radius: 3px; color: #666; display: inline-block; margin-bottom: 8px; }
+  .cause-conf { float: right; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 100px; }
+  .conf-high { background: #E6F7F1; color: #007A4D; }
+  .conf-medium { background: #FEF5E7; color: #C4870A; }
+  .conf-low { background: #FDECEA; color: #C0392B; }
+  .cause ul { list-style: none; padding: 0; }
+  .cause li { font-size: 12px; color: #555; padding: 2px 0 2px 14px; position: relative; line-height: 1.5; }
+  .cause li::before { content: '·'; position: absolute; left: 4px; color: #FF5C1A; font-size: 16px; line-height: 1; top: 0; }
+  .cause.moderate li::before { color: #FFB020; }
+
+  /* ACTIONS */
+  .action { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid #EBEBEB; align-items: flex-start; }
+  .action:last-child { border-bottom: none; }
+  .action-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .a1 { background: #FDECEA; color: #C0392B; }
+  .a2 { background: #FEF5E7; color: #C4870A; }
+  .a3 { background: #F0F0F8; color: #666; }
+  .action-text { font-size: 13px; font-weight: 500; margin-bottom: 5px; line-height: 1.4; flex: 1; }
+  .atag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 100px; border: 1px solid #E0E0E0; color: #888; margin-right: 4px; }
+
+  /* NARRATIVE */
+  .narrative { background: #F8F9FF; border-left: 3px solid #00A86B; padding: 14px 16px; border-radius: 0 6px 6px 0; font-size: 13px; line-height: 1.8; color: #333; }
+
+  /* FOOTER */
+  .footer { background: #0A1628; color: rgba(255,255,255,0.5); padding: 16px 50px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-top: 20px; }
+  .footer-logo { font-weight: 700; color: #fff; font-size: 13px; }
+  .footer-logo em { font-style: normal; color: #00E091; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="cover-logo">vera<em>ta</em></div>
+    <div class="cover-badge">Foundry IQ · Reasoning Agents · Project #123702</div>
+  </div>
+  <div class="cover-main">
+    <div class="cover-programme">${name}</div>
+    <div class="cover-meta">${period}${goal ? ' · ' + goal : ''}</div>
+    <div class="cover-rate-wrap">
+      <div class="cover-rate">${rate}%</div>
+      <div class="cover-rate-label">Overall<br>achievement rate</div>
+    </div>
+    ${goal ? `<div class="cover-goal">${goal}</div>` : ''}
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- EXEC SUMMARY -->
+  <div class="section">
+    <div class="section-title">Executive Summary</div>
+    <div class="exec-grid" id="pdf-exec"></div>
+  </div>
+
+  <!-- GAP ANALYSIS -->
+  <div class="section">
+    <div class="section-title">Performance Gap Analysis</div>
+    <table>
+      <thead><tr><th>Indicator</th><th>Target</th><th>Actual</th><th>Achievement</th><th>Severity</th></tr></thead>
+      <tbody>${(d.vp02.indicators || []).map(ind => {
+        const sev = ind.severity;
+        const r = parseFloat(ind.achievement_rate);
+        return `<tr>
+          <td style="font-weight:500;">${ind.indicator_name}</td>
+          <td class="mono">${ind.target.toLocaleString()} ${ind.unit||''}</td>
+          <td class="mono">${ind.actual.toLocaleString()} ${ind.unit||''}</td>
+          <td class="mono">${r.toFixed(1)}%</td>
+          <td><span class="sev sev-${sev}">${sev==='on_track'?'On track':sev.charAt(0).toUpperCase()+sev.slice(1)}</span></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+  </div>
+
+  <!-- ROOT CAUSE -->
+  <div class="section">
+    <div class="section-title">Root Cause Analysis — Foundry IQ</div>
+    ${(d.vp03.analysis || []).map(item => `
+      <div class="cause ${item.severity}">
+        <span class="cause-conf conf-${item.confidence}">${item.confidence} confidence</span>
+        <div class="cause-name">${item.indicator_name}</div>
+        <span class="cause-cat">${item.primary_root_cause.replace(/_/g,' ')}</span>
+        <ul>${(item.contributing_factors||[]).map(f=>`<li>${f}</li>`).join('')}</ul>
+      </div>`).join('')}
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="section">
+    <div class="section-title">Improvement Action Plan</div>
+    ${(d.vp04.actions || []).slice(0,6).map((a,i) => `
+      <div class="action">
+        <div class="action-num a${Math.min(i+1,3)}">${i+1}</div>
+        <div style="flex:1;">
+          <div class="action-text">${a.action}</div>
+          <span class="atag">${a.implementation_effort} effort</span>
+          <span class="atag">${a.expected_impact} impact</span>
+          <span class="atag">${a.timeframe}</span>
+        </div>
+      </div>`).join('')}
+  </div>
+
+  <!-- NARRATIVE -->
+  <div class="section">
+    <div class="section-title">Donor Narrative</div>
+    <div class="narrative">${d.narrative}</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div><span class="footer-logo">vera<em>ta</em></span> &nbsp;·&nbsp; Where data meets improvement.</div>
+  <div>Generated ${today} &nbsp;·&nbsp; Microsoft Agents League Hackathon 2026</div>
+</div>
+
+<script>
+// Populate exec summary
+const execSummary = ${JSON.stringify(d.execSummary)};
+const sections = execSummary.split('\\n\\n').filter(s => s.trim());
+const grid = document.getElementById('pdf-exec');
+grid.innerHTML = sections.slice(0,3).map(section => {
+  const lines = section.split('\\n');
+  const title = lines[0];
+  const content = lines.slice(1).join('\\n').trim();
+  const hasBullets = content.includes('•');
+  return '<div class="exec-block"><h4>' + title + '</h4>' +
+    (hasBullets
+      ? '<ul>' + content.split('\\n').filter(l=>l.trim()).map(l=>'<li>'+l.replace(/^•\\s*/,'')+' </li>').join('') + '</ul>'
+      : '<p>' + content + '</p>') +
+    '</div>';
+}).join('');
+window.onload = () => window.print();
+<\/script>
+</body>
+</html>`;
+
+  // Write to blob URL to avoid cross-window document access issues
+  const blob = new Blob([pdfHTML], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const win = window.open(url, '_blank');
+  if (!win) {
+    // Fallback: download as HTML file
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Verata_Report_${name.replace(/\s+/g,'_')}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+</script>
+</body>
+</html>
