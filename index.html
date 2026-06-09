@@ -807,6 +807,11 @@ Certifications awarded       400      198
 Job placements (90 days)     200      74
 Employer partnerships        25       18
 Beneficiary retention        80%      61%"></textarea>
+    <div style="margin:0.75rem 1.5rem 0; display:flex; align-items:center; gap:0.75rem;">
+      <label style="font-size:0.75rem;color:var(--text3);white-space:nowrap;">Foundry IQ Key</label>
+      <input type="password" id="foundryKeyInput" placeholder="Paste your Azure AI Foundry API key"
+        style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.75rem;color:var(--text);font-size:0.8rem;outline:none;" />
+    </div>
     <div class="input-card-footer">
       <span class="input-hint">Any format · Tables, lists, CSV, narrative</span>
       <div style="display:flex;gap:0.75rem;">
@@ -991,6 +996,31 @@ async function callClaude(system, userContent) {
   return text;
 }
 
+// VP-03: Azure AI Foundry IQ — Grounded root cause analysis
+async function callFoundry(system, userContent) {
+  const FOUNDRY_ENDPOINT = 'https://verata-agent-resource.services.ai.azure.com/api/projects/verata-agent';
+  const FOUNDRY_KEY = (document.getElementById('foundryKeyInput')?.value || '').trim();
+  if (!FOUNDRY_KEY) throw new Error('Please paste your Azure AI Foundry API key in the Foundry IQ Key field.');
+  const res = await fetch(`${FOUNDRY_ENDPOINT}/inference/chat/completions?api-version=2025-05-15-preview`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${FOUNDRY_KEY}`
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      max_tokens: 4000,
+      messages: [
+        { role: 'system', content: system },
+        { role: 'user', content: userContent }
+      ]
+    })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error('Foundry API error: ' + data.error.message);
+  return data.choices[0].message.content;
+}
+
 function safeJSON(text) {
   // Strip markdown fences
   let clean = text.replace(/```json|```/g, '').trim();
@@ -1051,7 +1081,7 @@ async function startAnalysis() {
     setPhase('analyse');
     setProcessing('Analysing root causes', 'Foundry IQ grounding — citing findings to your data');
     await delay(800);
-    const vp03 = safeJSON(await callClaude(`You are Verata, a Lean Six Sigma MBB and MERL specialist. For each critical/moderate indicator, identify: primary_root_cause (one of: process_design, resource_constraint, capacity_gap, context_barrier, data_quality, coordination_failure), 2-3 contributing_factors grounded in actual data, confidence (high/medium/low). Return ONLY raw JSON: {"analysis":[{"indicator_name":"string","severity":"string","achievement_rate":0,"primary_root_cause":"string","contributing_factors":["string"],"confidence":"string"}]}`, JSON.stringify(vp02)));
+    const vp03 = safeJSON(await callFoundry(`You are Verata, a Lean Six Sigma MBB and MERL specialist. For each critical/moderate indicator, identify: primary_root_cause (one of: process_design, resource_constraint, capacity_gap, context_barrier, data_quality, coordination_failure), 2-3 contributing_factors grounded in actual data, confidence (high/medium/low). Return ONLY raw JSON: {"analysis":[{"indicator_name":"string","severity":"string","achievement_rate":0,"primary_root_cause":"string","contributing_factors":["string"],"confidence":"string"}]}`, JSON.stringify(vp02)));
 
     // VP-04 Improve
     setPhase('improve');
