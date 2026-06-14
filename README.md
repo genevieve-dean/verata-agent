@@ -1,10 +1,10 @@
-# Verata — Where data meets improvement.
+# Verata — AI Programme Diagnostics for the Development Sector
 
 > **Microsoft Agents League Hackathon 2026** · Reasoning Agents Track · Foundry IQ
 
 ![Verata](https://img.shields.io/badge/Track-Reasoning%20Agents-0078D4?style=flat-square)
 ![Foundry IQ](https://img.shields.io/badge/IQ%20Layer-Foundry%20IQ-00A86B?style=flat-square)
-![Status](https://img.shields.io/badge/Status-Active%20Build-E07B00?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Live-00A86B?style=flat-square)
 
 > *Verata — from **veritas** (Latin: truth) + **data**. Verata finds the truth in your programme data.*
 
@@ -12,7 +12,7 @@
 
 ## What is Verata?
 
-Verata is an AI reasoning agent that helps NGO programme managers understand **why their programmes aren't delivering results** — and what to do about it.
+Verata is an AI reasoning agent that helps programme managers, M&E practitioners, CSI leads, and government programme units diagnose **why their programmes are underperforming** — and generate prioritised corrective actions in under 60 seconds. Built for NGOs, CSOs, CSI teams, government departments, and any organisation that tracks programme results.
 
 It bridges two disciplines that have never been combined in a single tool:
 
@@ -37,9 +37,9 @@ Verata is that bridge.
 
 ## Demo
 
-**[▶ Watch the 60-second demo](#)** *(link to be added)*
+**[▶ Live demo](https://verata-app.vercel.app)**
 
-**Live demo:** Open `index.html` in any browser, click **Load demo data**, then **Analyse my programme**.
+Open the app, click **Load demo data**, then **Analyse my programme** — or paste your own indicator data.
 
 ---
 
@@ -53,7 +53,7 @@ User pastes programme data (any format)
 ┌──────────────────────────────────────────────────────────────────┐
 │  D  Define    Extract programme metadata + indicator list        │
 │  M  Measure   Calculate achievement rates + severity scores      │
-│  A  Analyse   Root cause analysis ← FOUNDRY IQ                  │
+│  A  Analyse   Root cause analysis ← FOUNDRY IQ (gpt-4.1-mini)  │
 │  I  Improve   Prioritised action plan with effort/impact         │
 │  C  Control   KPIs, review triggers + accountability register    │
 │  R  Report    Donor narrative + Executive summary                │
@@ -64,14 +64,14 @@ Complete Verata Report (gap table · root causes · actions · control plan · n
 
 ### Phase Details
 
-| Phase | Prompt | Foundry IQ | What happens |
-|-------|--------|------------|--------------|
-| Define | VP-01 | No | Converts raw unstructured input into clean JSON: programme name, goal, period, indicators |
-| Measure | VP-02 | No | Calculates achievement rate per indicator; assigns severity (Critical / Moderate / On Track) |
-| Analyse | VP-03 | **YES** | Identifies root cause category + 2–3 grounded contributing factors per gap; confidence-rated |
-| Improve | VP-04 | No | Generates prioritised actions scored by effort, impact, and timeframe |
-| Control | VP-07 | No | Builds a control plan: KPIs to monitor, warning triggers, review frequency, accountable roles |
-| Report | VP-05 + VP-06 | No | Donor narrative paragraph + 3-section executive summary (parallel calls) |
+| Phase | Prompt | Model | What happens |
+|-------|--------|-------|--------------|
+| Define | VP-01 | claude-sonnet-4-5 | Converts raw unstructured input into clean JSON: programme name, goal, period, indicators |
+| Measure | VP-02 | claude-sonnet-4-5 | Calculates achievement rate per indicator; assigns severity (Critical / Moderate / On Track) |
+| Analyse | VP-03 | **Foundry IQ — gpt-4.1-mini** | Identifies root cause category + 2–3 grounded contributing factors per gap; confidence-rated |
+| Improve | VP-04 | claude-sonnet-4-5 | Generates prioritised actions scored by effort, impact, and timeframe |
+| Control | VP-07 | claude-sonnet-4-5 | Builds a control plan: KPIs to monitor, warning triggers, review frequency, accountable roles |
+| Report | VP-05 + VP-06 | claude-sonnet-4-5 | Donor narrative paragraph + 3-section executive summary (parallel calls) |
 
 ### Root Cause Categories (Analyse Phase)
 
@@ -88,9 +88,9 @@ Every finding is grounded in the actual uploaded data — not generic advice. Co
 
 ---
 
-## Microsoft IQ Integration
+## Microsoft Foundry IQ Integration
 
-**IQ Layer used: Foundry IQ**
+**IQ Layer used: Foundry IQ** — gpt-4.1-mini, Global Standard, East US 2, via verata-agent-us project
 
 Foundry IQ powers the **Analyse phase (VP-03)** of the DMAIC pipeline — the most critical reasoning step. This ensures:
 
@@ -171,9 +171,9 @@ verata-agent/
 
 ## Built With
 
-- **Microsoft Foundry** — Reasoning Agents track
-- **Foundry IQ** — Grounded root cause analysis (Analyse phase)
-- **Anthropic claude-sonnet-4** — DMAIC reasoning pipeline
+- **Microsoft AI Foundry** — gpt-4.1-mini, Reasoning Agents track, Foundry IQ (Analyse phase)
+- **Anthropic claude-sonnet-4-5** — DMAIC reasoning pipeline (all other phases)
+- **Next.js 16** — deployed on Vercel
 - **HTML / CSS / Vanilla JS** — Single-file prototype, zero dependencies
 
 ---
@@ -187,6 +187,7 @@ Certified Lean Six Sigma Master Black Belt (MBB) · MERL Specialist
 Verata is built from lived domain expertise — 10+ years spanning process excellence consulting, M&E systems design, and digital product development across the African development sector.
 
 - LinkedIn: [linkedin.com/in/genevieve-n-dean-a313572a](https://www.linkedin.com/in/genevieve-n-dean-a313572a/)
+- GitHub: [github.com/genevieve-dean](https://github.com/genevieve-dean)
 - MAW Consulting Africa: [mawconsultingafrica.com](https://mawconsultingafrica.com)
 
 ---
